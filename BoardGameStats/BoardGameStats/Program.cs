@@ -1,7 +1,15 @@
+using BoardGameStats.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<BoardGameStatsContext>(options =>
+                    options.UseSqlServer(config.GetConnectionString("BoardGameStatsContext")));
 
 var app = builder.Build();
 

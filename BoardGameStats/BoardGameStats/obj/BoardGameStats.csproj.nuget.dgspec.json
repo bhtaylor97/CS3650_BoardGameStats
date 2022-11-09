@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj": {}
+    "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\CS3650_BoardGameStats\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj": {
+    "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\CS3650_BoardGameStats\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj",
+        "projectUniqueName": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\CS3650_BoardGameStats\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj",
         "projectName": "BoardGameStats",
-        "projectPath": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj",
+        "projectPath": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\CS3650_BoardGameStats\\BoardGameStats\\BoardGameStats\\BoardGameStats.csproj",
         "packagesPath": "C:\\Users\\bhtay\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\BoardGameStats\\BoardGameStats\\obj\\",
+        "outputPath": "C:\\Users\\bhtay\\Documents\\Weber State\\Fall 2022\\CS 3650\\CS3650_BoardGameStats\\BoardGameStats\\BoardGameStats\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bhtay\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,6 +39,26 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
