@@ -17,5 +17,8 @@ namespace BoardGameStats.Models
         [Range(0, int.MaxValue, ErrorMessage = "Can't play a game a negative number of times.")]
         [Display(Name = "Number of plays:")]
         public int NumPlays { get; set; }
+
+        [Required]
+        public byte[] Image { get; set; }
     }
 }

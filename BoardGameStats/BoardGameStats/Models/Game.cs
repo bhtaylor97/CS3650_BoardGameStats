@@ -21,5 +21,10 @@ namespace BoardGameStats.Models
         public bool Won { get; set; }
 
         public decimal Score { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name ="Date")]
+        public DateTime DateOfPlay { get; set; }
     }
 }
