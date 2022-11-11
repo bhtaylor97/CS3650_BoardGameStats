@@ -10,6 +10,8 @@ namespace BoardGameStats.Data
         {
         }
 
-        public DbSet<BoardGame> BoardGame { get; set; }
+        public DbSet<BoardGame> BoardGames { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Player> Players { get; set; }
     }
 }

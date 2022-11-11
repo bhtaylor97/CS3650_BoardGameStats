@@ -7,6 +7,7 @@ namespace BoardGameStats.Models
     public class BoardGame
     {
         [Key]
+        [Required]
         public int Id { get; set; }
 
         [Required]
