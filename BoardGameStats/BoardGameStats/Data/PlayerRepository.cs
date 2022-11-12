@@ -26,9 +26,9 @@ namespace BoardGameStats.Data
             context.SaveChanges();
         }
 
-        public List<Player> GetAllPlayers()
+        public IEnumerable<Player> GetAllPlayers()
         {
-            return context.Players.ToList();
+            return context.Players;
         }
 
         public Player GetPlayer(int id)

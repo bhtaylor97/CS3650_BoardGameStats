@@ -11,5 +11,8 @@ namespace BoardGameStats.Models
         [Required]
         public string? Name { get; set; }
 
+        [Required]
+        public int NumPlays { get; set; }
+
     }
 }

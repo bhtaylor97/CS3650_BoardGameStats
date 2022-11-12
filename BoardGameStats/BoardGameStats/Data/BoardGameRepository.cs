@@ -23,5 +23,10 @@ namespace BoardGameStats.Data
             context.BoardGames.Remove(bgToDelete);
             context.SaveChanges();
         }
+
+        public IEnumerable<BoardGame> GetAllBoardGames()
+        {
+            return context.BoardGames;
+        }
     }
 }
