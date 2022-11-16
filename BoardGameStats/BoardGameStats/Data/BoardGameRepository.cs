@@ -28,5 +28,10 @@ namespace BoardGameStats.Data
         {
             return context.BoardGames;
         }
+
+        public BoardGame Get(int id)
+        {
+            return context.BoardGames.Find(id);
+        }
     }
 }

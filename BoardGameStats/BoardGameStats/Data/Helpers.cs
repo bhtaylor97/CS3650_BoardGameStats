@@ -7,20 +7,26 @@ namespace BoardGameStats.Data
         private readonly BoardGameRepository _boardGameRepository;
         private readonly GameRepository _gameRepository;
         private readonly PlayerRepository _playerRepository;
-        public HelpersHelpers HelpersHelpers;
+        public HelpersHelpers helpersHelpers;
 
         public Helpers(BoardGameRepository boardGameRepository, GameRepository gameRepository, PlayerRepository playerRepository, HelpersHelpers helpersHelpers)
         {
             _boardGameRepository = boardGameRepository;
             _gameRepository = gameRepository;
             _playerRepository = playerRepository;
-            HelpersHelpers = helpersHelpers;
+            this.helpersHelpers = helpersHelpers;
         }
 
         public class HighScore
         {
             public decimal Score { get; set; }
             public string? GameName { get; set; }
+        }
+
+        public class PlayerScore
+        {
+            public decimal Score { get; set; }
+            public string? PlayerName { get; set; }
         }
         
         public class BestPlayer
@@ -58,9 +64,9 @@ namespace BoardGameStats.Data
             //Who wins second most (by percentage)
             public BestPlayer? SecondBestPlayer { get; set; }
             //Highest score
-            public int HighestScore { get; set; }
+            public PlayerScore HighestScore { get; set; }
             //Lowest score
-            public int LowestScore { get; set; }
+            public PlayerScore LowestScore { get; set; }
         }
 
         public PlayerDetails GetPlayerDetails(int playerId)
@@ -74,42 +80,32 @@ namespace BoardGameStats.Data
 
             //******************Get TotalWins*******************************
             playerDetails.TotalWins = 0;
-            foreach(Game game in playerGames)
+            if (playerGames.Any())
             {
-                if (game.Won)
+                foreach (Game game in playerGames)
                 {
-                    playerDetails.TotalWins++;
+                    if (game.Won)
+                    {
+                        playerDetails.TotalWins++;
+                    }
                 }
             }
 
             //***************Get WinPercentage*******************************
-            playerDetails.WinPercentage = Decimal.Round((playerDetails.TotalWins / playerDetails.ThisPlayer.NumPlays) * 100, 2);
+            if (playerDetails.ThisPlayer.NumPlays > 0)
+            {
+                playerDetails.WinPercentage = Decimal.Round((playerDetails.TotalWins / playerDetails.ThisPlayer.NumPlays) * 100, 2);
+            }
+            else { playerDetails.WinPercentage = 0; }
 
 
             //*****************Get TopThreeGames******************************
 
             //Separate all games played by board game
-            List<List<Game>> gamesByBoardGame = HelpersHelpers.GetGamesByBoardGame(playerGames);
+            List<List<Game>> gamesByBoardGame = helpersHelpers.GetGamesByBoardGame(playerGames);
 
             //Calculate win percentages for each board game group
-            decimal[] winPercentages = new decimal[gamesByBoardGame.Count()];
-            for(int i = 0; i < gamesByBoardGame.Count(); i++)
-            {
-                int wins = 0;
-                int totalPlays = 0;
-                //Count wins and total plays
-                foreach(Game g in gamesByBoardGame[i])
-                {
-                    if (g.Won)
-                    {
-                        wins++;
-                    }
-                    totalPlays++;
-                }
-                
-                //Add calculated percentage to winPercentages array
-                winPercentages[i] = Decimal.Round(((decimal)wins / (decimal)totalPlays) * 100, 2);
-            }
+            decimal[] winPercentages = helpersHelpers.GetWinPercentages(gamesByBoardGame);
 
             IEnumerable<BoardGame> allBoardGames = _boardGameRepository.GetAllBoardGames();
 
@@ -174,7 +170,7 @@ namespace BoardGameStats.Data
             //************************Get HighScores***************************
             //In what games does this player have the high score?
             //Sort ALL game sessions into a 2D list
-            gamesByBoardGame = HelpersHelpers.GetGamesByBoardGame(allGames);
+            gamesByBoardGame = helpersHelpers.GetGamesByBoardGame(allGames);
             Game[] allHighScoringGames = new Game[gamesByBoardGame.Count()];
 
             for(int i = 0; i < gamesByBoardGame.Count(); i++)
@@ -213,6 +209,95 @@ namespace BoardGameStats.Data
 
 
             return playerDetails;
+        }
+
+        public BoardGameDetails GetBoardGameDetails(int boardGameId)
+        {
+            BoardGameDetails details = new BoardGameDetails();
+            IEnumerable<Game> allGames = _gameRepository.GetAllGames();
+            IEnumerable<Player> allPlayers = _playerRepository.GetAllPlayers();
+            //******************Get ThisBoardGame***********************
+            details.ThisBoardGame = _boardGameRepository.Get(boardGameId);
+
+            //******************Get FirstBestPlayer**********************
+            IEnumerable<Game> boardGameGames = allGames.Where(g => g.BoardGameId == boardGameId);
+            //Sort all plays of this game by player
+            List<List<Game>> gamesByPlayer = helpersHelpers.GetGamesByPlayer(boardGameGames);
+            //Get win percentages for each player
+            decimal[] winPercentages = helpersHelpers.GetWinPercentages(gamesByPlayer);
+            //Get player name and win percentage for the best player
+            string? playerName = "";
+            decimal winPercent = 0;
+            int bestIndex = 0;
+
+            for(int i = 0; i < winPercentages.Length; i++)
+            {
+                if (winPercentages[i] > winPercent)
+                {
+                    winPercent = winPercentages[i];
+                    playerName = allPlayers.Where(p => p.Id == gamesByPlayer[i][0].PlayerId).ToList()[0].Name;
+                    bestIndex = i;
+                }
+            }
+
+            details.FirstBestPlayer = new BestPlayer();
+            details.FirstBestPlayer.WinPercent = winPercent;
+            details.FirstBestPlayer.PlayerName = playerName;
+
+            //**************Get SecondBestPlayer******************************
+            //Eliminate the previous winning score
+            winPercentages[bestIndex] = 0;
+            playerName = "";
+            winPercent = 0;
+
+            for (int i = 0; i < winPercentages.Length; i++)
+            {
+                if (winPercentages[i] > winPercent)
+                {
+                    winPercent = winPercentages[i];
+                    playerName = allPlayers.Where(p => p.Id == gamesByPlayer[i][0].PlayerId).ToList()[0].Name;
+                }
+            }
+
+            details.SecondBestPlayer = new BestPlayer();
+            details.SecondBestPlayer.PlayerName= playerName;
+            details.SecondBestPlayer.WinPercent = winPercent;
+
+
+            //**************Get HighestScore*********************
+            details.HighestScore = new PlayerScore();
+            details.HighestScore.Score = 0;
+            details.HighestScore.PlayerName = "";
+            foreach(List<Game> list in gamesByPlayer)
+            {
+                foreach(Game g in list)
+                {
+                    if(g.Score > details.HighestScore.Score)
+                    {
+                        details.HighestScore.Score = g.Score;
+                        details.HighestScore.PlayerName = allPlayers.Where(p => p.Id == g.PlayerId).ToList()[0].Name;
+                    }
+                }
+            }
+
+            //****************Get LowestScore********************
+            details.LowestScore = new PlayerScore();
+            details.LowestScore.Score = details.HighestScore.Score;
+            details.LowestScore.PlayerName = "";
+
+            foreach (List<Game> list in gamesByPlayer)
+            {
+                foreach (Game g in list)
+                {
+                    if (g.Score < details.LowestScore.Score)
+                    {
+                        details.LowestScore.Score = g.Score;
+                        details.LowestScore.PlayerName = allPlayers.Where(p => p.Id == g.PlayerId).ToList()[0].Name;
+                    }
+                }
+            }
+
+            return details;
         }
     }
 }

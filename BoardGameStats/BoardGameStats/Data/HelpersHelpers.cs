@@ -43,5 +43,45 @@ namespace BoardGameStats.Data
 
             return gamesByBoardGame;
         }
+
+        //Takes a list of games and returns a 2D list of games sorted by player
+        public List<List<Game>> GetGamesByPlayer(IEnumerable<Game> games)
+        {
+            List<List<Game>> gamesByPlayer = new List<List<Game>>();
+            bool gameHasBeenAdded;
+
+            //Populate the list
+            foreach (Game g in games)
+            {
+                gameHasBeenAdded = false;
+                //Add initial list if needed
+                if (gamesByPlayer.Count() == 0)
+                {
+                    gamesByPlayer.Add(new List<Game>());
+                    gamesByPlayer[0].Add(g);
+                }
+                else
+                {
+                    //Search lists in gamesByBoardGame to find matching playerIDs
+                    foreach (List<Game> l in gamesByPlayer)
+                    {
+                        if (g.PlayerId == l[0].PlayerId)
+                        {
+                            l.Add(g);
+                            gameHasBeenAdded = true;
+                            break;
+                        }
+                    }
+                    //If the game was not added by this point, there is no list for any games with this boardGameId yet.
+                    if (!gameHasBeenAdded)
+                    {
+                        gamesByPlayer.Add(new List<Game>());
+                        gamesByPlayer[gamesByPlayer.Count() - 1].Add(g);
+                    }
+                }
+            }
+
+            return gamesByPlayer;
+        }
     }
 }
