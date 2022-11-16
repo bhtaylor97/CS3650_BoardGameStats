@@ -83,5 +83,30 @@ namespace BoardGameStats.Data
 
             return gamesByPlayer;
         }
+
+        //Gets win percentages from a 2D list of games
+        public decimal[] GetWinPercentages(List<List<Game>> sortedGames)
+        {
+            decimal[] winPercentages = new decimal[sortedGames.Count()];
+            for (int i = 0; i < sortedGames.Count(); i++)
+            {
+                int wins = 0;
+                int totalPlays = 0;
+                //Count wins and total plays
+                foreach (Game g in sortedGames[i])
+                {
+                    if (g.Won)
+                    {
+                        wins++;
+                    }
+                    totalPlays++;
+                }
+
+                //Add calculated percentage to winPercentages array
+                winPercentages[i] = Decimal.Round(((decimal)wins / (decimal)totalPlays) * 100, 2);
+            }
+
+            return winPercentages;
+        }
     }
 }
