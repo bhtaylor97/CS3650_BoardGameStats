@@ -10,6 +10,9 @@ var config = builder.Configuration;
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<BoardGameStatsContext>(options =>
                     options.UseSqlServer(config.GetConnectionString("BoardGameStatsContext")));
+builder.Services.AddScoped<PlayerRepository>();
+builder.Services.AddScoped<BoardGameRepository>();
+builder.Services.AddScoped<GameRepository>();
 
 var app = builder.Build();
 

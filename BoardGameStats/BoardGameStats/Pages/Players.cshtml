@@ -3,3 +3,31 @@
 @{
     Layout = "Shared/_Layout.cshtml";
 }
+
+<div class="container">
+<h4>Add a Player</h4>
+<div class="content">
+    <form method="post">
+        <label class="control-label">Enter Player Name</label>
+        <input asp-for="newPlayer.Name" class="form-control"/>
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </form>
+</div>
+</div>
+
+@if(Model.allPlayers.Count() > 0)
+{
+    <div class="container">
+    @foreach(var p in Model.allPlayers)
+    {
+        <div class="row">
+            <div class="col">
+            <p>@p.Name</p>
+            </div>
+            <div class="col">
+            <a class="btn btn-primary" asp-page="playerdetails/" asp-route-playerId="@p.Id">Details</a>
+            </div>
+        </div>
+    }
+    </div>
+}
