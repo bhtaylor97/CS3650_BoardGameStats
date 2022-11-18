@@ -18,7 +18,6 @@ namespace BoardGameStats.Models
         [Display(Name = "Number of plays:")]
         public int NumPlays { get; set; }
 
-        [Required]
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
     }
 }

@@ -3,3 +3,23 @@
 @{
     Layout = "Shared/_Layout.cshtml";
 }
+
+<div class="container">
+    <h4>Add a Player</h4>
+    <form enctype="multipart/form-data" method="post">
+        <label class="control-label">Enter Game Name</label>
+        <input asp-for="newBoardGame.Name" class="form-control"/>
+        <input type="submit" value="Add" class="btn btn-primary"/>
+        <input asp-for="FileUpload.FormFile" type="file"/>
+    </form>
+</div>
+
+@if(Model.allBoardGames.Count() > 0)
+{
+    <div class="container">
+        @foreach(var bg in Model.allBoardGames)
+        {
+            <p>@bg.Name</p>
+        }
+    </div>
+}
