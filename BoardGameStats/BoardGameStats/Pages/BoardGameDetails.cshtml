@@ -1,5 +1,13 @@
-﻿@page
+﻿@page "{boardGameId:int}"
 @model BoardGameStats.Pages.BoardGameDetailsModel
 @{
     Layout = "Shared/_Layout.cshtml";
 }
+
+<div class="container">
+    <p>@Model.details.ThisBoardGame.Name</p>
+    <p>Best Player: @Model.details.FirstBestPlayer.PlayerName, wins @Model.details.FirstBestPlayer.WinPercent% of games</p>
+    <p>Second Best Player: @Model.details.SecondBestPlayer.PlayerName, wins @Model.details.SecondBestPlayer.WinPercent% of games</p>
+    <p>Highest Score: @Model.details.HighestScore.Score, by @Model.details.HighestScore.PlayerName</p>
+    <p>Lowest Score: @Model.details.LowestScore.Score, by @Model.details.LowestScore.PlayerName</p>
+</div>

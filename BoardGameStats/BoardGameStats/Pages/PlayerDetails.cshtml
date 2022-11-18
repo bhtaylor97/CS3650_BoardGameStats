@@ -1,5 +1,24 @@
-﻿@page
+﻿@page "{playerId:int}"
 @model BoardGameStats.Pages.PlayerDetailsModel
 @{
     Layout = "Shared/_Layout.cshtml";
 }
+<div class="container">
+    <p>@Model.details.ThisPlayer.Name</p>
+    <p>Total Wins: @Model.details.TotalWins</p>
+    <p>Percent of games won: @Model.details.WinPercentage%</p>
+    <p>Top Three Games</p>
+    <ul>
+        @foreach(var game in Model.details.TopThreeGames)
+        {
+            <li>@game.GameName - @game.WinPercentage% of games won</li>
+        }
+    </ul>
+    <p>High Scores</p>
+    <ul>
+        @foreach(var hs in Model.details.HighScores)
+        {
+            <li>@hs.GameName, @hs.Score points</li>
+        }
+    </ul>
+</div>

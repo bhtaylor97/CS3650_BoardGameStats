@@ -13,6 +13,8 @@ builder.Services.AddDbContext<BoardGameStatsContext>(options =>
 builder.Services.AddScoped<PlayerRepository>();
 builder.Services.AddScoped<BoardGameRepository>();
 builder.Services.AddScoped<GameRepository>();
+builder.Services.AddScoped<HelpersHelpers>();
+builder.Services.AddScoped<Helpers>();
 
 var app = builder.Build();
 

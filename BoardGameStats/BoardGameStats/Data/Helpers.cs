@@ -114,6 +114,7 @@ namespace BoardGameStats.Data
             {
                 decimal winPercentage = 0;
                 int bestIndex = 0;
+                playerDetails.TopThreeGames[i] = new BoardGameAndPercentage();
                 for (int j = 0; j < winPercentages.Length; j++)
                 {
                     if (winPercentages[j] > winPercentage)
@@ -164,7 +165,10 @@ namespace BoardGameStats.Data
                 }
 
                 //Set winPercentages at the best index to 0, this way it will not be counted next iteration...
-                winPercentages[bestIndex] = 0;
+                if (winPercentages.Length > 0)
+                {
+                    winPercentages[bestIndex] = 0;
+                }
             }
 
             //************************Get HighScores***************************
@@ -245,8 +249,11 @@ namespace BoardGameStats.Data
             details.FirstBestPlayer.PlayerName = playerName;
 
             //**************Get SecondBestPlayer******************************
-            //Eliminate the previous winning score
-            winPercentages[bestIndex] = 0;
+            //Eliminate the previous winning score - if any games exist
+            if (winPercentages.Length > 0)
+            {
+                winPercentages[bestIndex] = 0;
+            }
             playerName = "";
             winPercent = 0;
 
