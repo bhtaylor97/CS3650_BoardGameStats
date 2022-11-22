@@ -1,0 +1,106 @@
+﻿@page
+@model BoardGameStats.Pages.LogPlayModel
+@{
+    ViewData["Title"] = "Log a Play";
+    Layout = "Shared/_Layout.cshtml";
+}
+@using BoardGameStats.Models;
+
+<div class="container">
+    <h4>Log a Play for @Model.boardGame.Name</h4>
+    <form method="post" asp-route-boardGameId="@Model.boardGame.Id" id="form">
+        <section id="section0">
+            <label>Select a player:</label>
+            <select asp-for="newGames[0].PlayerId" id="players">
+                <option value="0"></option>
+                @foreach(var p in Model.allPlayers)
+                {
+                    <option value="@p.Id">@p.Name</option>
+                }
+            </select>
+            <label for="score">Score:</label>
+            <input asp-for="newGames[0].Score" type="text"/>
+            <label for="won">Won?</label>
+            <input asp-for="newGames[0].Won" type="checkbox" id="won"/>
+            <button type="button" class="btn btn-secondary" onclick="addFormSection()" id="button0">Add Player</button>
+        </section>
+        <input type="submit" class="btn btn-primary" value="Log Play" id="submit"/>
+
+    </form>
+</div>
+
+@*
+    Add a new section of the form for however many players
+    the user wants to add.
+*@
+<script>
+var formCount = 1;
+    function addFormSection() {    
+        @{Model.newGame = new Game();
+          Model.newGames.Add(Model.newGame);}
+        const newSection = document.createElement("section");
+        newSection.setAttribute('id', 'section' + formCount);
+        //First label
+        const label1 = document.createElement("label");
+        var labelContent = document.createTextNode("Select a player:");
+        label1.appendChild(labelContent);
+        newSection.appendChild(label1);
+        //Select section
+        const select = document.createElement("select");
+        select.setAttribute('name', 'newGames[' + formCount + '].PlayerId');
+        select.setAttribute('id', 'players');
+        @foreach(var p in Model.allPlayers)
+        {
+            @:var option = document.createElement("option"); 
+            @:option.setAttribute('value', @p.Id);
+            @:var optionText = document.createTextNode("@p.Name");
+            @:option.appendChild(optionText);
+            @:select.appendChild(option);
+        }
+        newSection.appendChild(select);
+        //Score label
+        var label2 = document.createElement("label");
+        labelContent = document.createTextNode("Score:");
+        label2.appendChild(labelContent);
+        newSection.appendChild(label2);
+        //Score input
+        var textInput = document.createElement("input");
+        textInput.setAttribute('type', 'text');
+        textInput.setAttribute('name', 'newGames[' + formCount + '].Score');
+        newSection.appendChild(textInput);
+        //Won label
+        var label3 = document.createElement("label");
+        labelContent = document.createTextNode("Won?");
+        label3.appendChild(labelContent);
+        newSection.appendChild(label3);
+        //Won input
+        var wonInput = document.createElement("input");
+        wonInput.setAttribute('type', 'checkbox');
+        wonInput.setAttribute('name', 'newGames[' + formCount + '].Won');
+        newSection.appendChild(wonInput);
+        //Add the button to add yet another form section
+        var button = document.createElement("button");
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'btn btn-secondary');
+        button.setAttribute('onclick', 'addFormSection()');
+        button.setAttribute('id', 'button' + formCount);
+        var buttonText = document.createTextNode("Add a Player");
+        button.appendChild(buttonText);
+        newSection.appendChild(button);
+
+        //Make the old button disappear
+        var oldButton = document.getElementById("button" + (formCount - 1));
+        oldButton.remove();
+
+        //Insert the new section after the previous section
+        var submitButton = document.getElementById("submit");
+        var form = document.getElementById("form");
+        form.insertBefore(newSection, submitButton);
+        formCount++;
+
+    }
+
+    function removeFormSection() {
+
+    }
+</script>

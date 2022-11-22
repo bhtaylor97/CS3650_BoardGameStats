@@ -18,6 +18,14 @@ namespace BoardGameStats.Data
             return newGame;
         }
 
+        public void AddList(List<Game> games)
+        {
+            foreach(var g in games)
+            {
+                context.Games.Add(g);
+            }
+            context.SaveChanges();
+        }
         public void Delete(Game gameToDelete)
         {
             context.Games.Remove(gameToDelete);

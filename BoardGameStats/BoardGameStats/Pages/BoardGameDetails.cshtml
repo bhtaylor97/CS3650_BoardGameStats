@@ -10,4 +10,5 @@
     <p>Second Best Player: @Model.details.SecondBestPlayer.PlayerName, wins @Model.details.SecondBestPlayer.WinPercent% of games</p>
     <p>Highest Score: @Model.details.HighestScore.Score, by @Model.details.HighestScore.PlayerName</p>
     <p>Lowest Score: @Model.details.LowestScore.Score, by @Model.details.LowestScore.PlayerName</p>
+    <a class="btn btn-primary" asp-page="logplay/" asp-route-boardGameId="@Model.details.ThisBoardGame.Id">Log a Play with This Game</a>
 </div>
