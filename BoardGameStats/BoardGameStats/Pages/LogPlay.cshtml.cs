@@ -39,10 +39,17 @@ namespace BoardGameStats.Pages
 
         public IActionResult OnPost(int boardGameId)
         {
+            List<Player> players = new List<Player>();
             foreach(var g in newGames)
             {
                 g.BoardGameId = boardGameId;
+                players.Add(pr.GetPlayer(g.PlayerId));
+                players[players.Count() - 1].NumPlays++;
             }
+            boardGame = bgr.Get(boardGameId);
+            boardGame.NumPlays++;
+            bgr.Update(boardGame);
+            pr.UpdateList(players);
             gr.AddList(newGames);
             return Redirect("BoardGameDetails/" + boardGameId.ToString());
         }

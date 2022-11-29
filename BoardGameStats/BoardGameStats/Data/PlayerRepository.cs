@@ -36,6 +36,15 @@ namespace BoardGameStats.Data
             return context.Players.Find(id);
         }
 
+        public void UpdateList(List<Player> players)
+        {
+            foreach (var p in players)
+            {
+                var c = context.Players.Attach(p);
+                c.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            }
+            context.SaveChanges();
+        }
 
     }
 }

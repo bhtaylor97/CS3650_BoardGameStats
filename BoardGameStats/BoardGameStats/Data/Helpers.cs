@@ -94,7 +94,8 @@ namespace BoardGameStats.Data
             //***************Get WinPercentage*******************************
             if (playerDetails.ThisPlayer.NumPlays > 0)
             {
-                playerDetails.WinPercentage = Decimal.Round((playerDetails.TotalWins / playerDetails.ThisPlayer.NumPlays) * 100, 2);
+                playerDetails.WinPercentage = ((decimal)playerDetails.TotalWins / (decimal)playerDetails.ThisPlayer.NumPlays) * 100;
+                playerDetails.WinPercentage = Decimal.Round(playerDetails.WinPercentage, 2);
             }
             else { playerDetails.WinPercentage = 0; }
 

@@ -33,5 +33,13 @@ namespace BoardGameStats.Data
         {
             return context.BoardGames.Find(id);
         }
+
+        public BoardGame Update(BoardGame bgToUpdate)
+        {
+            var bg = context.BoardGames.Attach(bgToUpdate);
+            bg.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+            return bgToUpdate;
+        }
     }
 }
