@@ -196,7 +196,7 @@ namespace BoardGameStats.Data
             List<Game> playerHighScoringGames = new List<Game>();
             for(int i = 0; i < allHighScoringGames.Count(); i++)
             {
-                if (allHighScoringGames[i].PlayerId == playerId)
+                if (allHighScoringGames[i].PlayerId == playerId && allHighScoringGames[i].Score > 0)
                 {
                     playerHighScoringGames.Add(allHighScoringGames[i]);
                 }

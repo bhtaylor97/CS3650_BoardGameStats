@@ -5,10 +5,42 @@
 }
 
 <div class="container">
-    <p>@Model.details.ThisBoardGame.Name</p>
-    <p>Best Player: @Model.details.FirstBestPlayer.PlayerName, wins @Model.details.FirstBestPlayer.WinPercent% of games</p>
-    <p>Second Best Player: @Model.details.SecondBestPlayer.PlayerName, wins @Model.details.SecondBestPlayer.WinPercent% of games</p>
-    <p>Highest Score: @Model.details.HighestScore.Score, by @Model.details.HighestScore.PlayerName</p>
-    <p>Lowest Score: @Model.details.LowestScore.Score, by @Model.details.LowestScore.PlayerName</p>
+    <h2>@Model.details.ThisBoardGame.Name</h2>
+    @if (Model.details.ThisBoardGame.Image != null)
+    {
+        <img src="data:image/jpg;base64,@Html.Raw(Convert.ToBase64String(Model.details.ThisBoardGame.Image))" alt="@Model.details.ThisBoardGame.Name artwork" style="width: 18rem;" class="card-img-top"/>
+    }
+    else
+    {
+        @*Display a 'no image' image*@
+        <img src="https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg" alt="No image available" style="width: 18rem;" class="card-img-top"/>
+    }
+    <h3>Best Players</h3>
+    @if (Model.details.FirstBestPlayer.WinPercent > 0)
+    {
+        <p>1: @Model.details.FirstBestPlayer.PlayerName, win percentage: @Model.details.FirstBestPlayer.WinPercent%</p>
+        @if (Model.details.SecondBestPlayer.WinPercent > 0)
+        {
+            <p>2: @Model.details.SecondBestPlayer.PlayerName, win percentage: @Model.details.SecondBestPlayer.WinPercent%</p>
+        }
+        else
+        {
+            <p>2: No one else has won this game yet!</p>
+        }
+    }
+    else
+    {
+        <p>No one has won this game yet!</p>
+    }
+    <h3>Scores</h3>
+    @if (Model.details.HighestScore.Score > 0)
+    {
+        <p>Highest Score: @Model.details.HighestScore.Score, by @Model.details.HighestScore.PlayerName</p>
+        <p>Lowest Score: @Model.details.LowestScore.Score, by @Model.details.LowestScore.PlayerName</p>
+    }
+    else
+    {
+        <p>No score data exists for this game yet!</p>
+    }
     <a class="btn btn-primary" asp-page="logplay/" asp-route-boardGameId="@Model.details.ThisBoardGame.Id">Log a Play with This Game</a>
 </div>
