@@ -17,22 +17,34 @@
 @if(Model.allBoardGames.Count() > 0)
 {
     <div class="container">
-        @foreach(var bg in Model.allBoardGames)
+        @for(int i = 0; i < Model.allBoardGames.Count; i += 5)
         {
-            <div class="card" style="width: 18rem;">
-                @if (bg.Image != null)
+            <div class="row">
+            @for(int j = 0; j < 5; j++)
+            {
+                if ((j + i) < Model.allBoardGames.Count)
                 {
-                    <img src="data:image/jpg;base64,@Html.Raw(Convert.ToBase64String(bg.Image))" alt="@bg.Name artwork" class="card-img-top"/>
+                <div class="col">
+                <div class="card" onclick="location.href = '/boardgamedetails/' + @Model.allBoardGames[j + i].Id">
+                    @if (Model.allBoardGames[j + i].Image != null)
+                    {
+                        <img src="data:image/jpg;base64,@Html.Raw(Convert.ToBase64String(Model.allBoardGames[j + i].Image))" alt="@Model.allBoardGames[j + i].Name artwork" class="card-img-top"/>
+                    }
+                    else
+                    {
+                        @*Display a 'no image' image*@
+                        <img src="https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg" alt="No image available" class="card-img-top"/>
+                    }
+                    <div class="card-body">
+                    <h5 class="card-title">@Model.allBoardGames[j + i].Name</h5>
+                    <p class="card-text">Plays: @Model.allBoardGames[j + i].NumPlays</p>
+                    </div>
+                </div>
+                </div>
                 }
-                else
-                {
-                    @*Display a 'no image' image*@
-                    <img src="https://st4.depositphotos.com/17828278/24401/v/600/depositphotos_244011872-stock-illustration-image-vector-symbol-missing-available.jpg" alt="No image available" class="card-img-top"/>
-                }
-                <h5 class="card-title">@bg.Name</h5>
-                <p class="card-text">Plays: @bg.NumPlays</p>
-                <a asp-page="boardgamedetails/" asp-route-boardGameId="@bg.Id" class="btn btn-primary">Details</a>
+            }
             </div>
         }
-    </div>
+        </div>
+    
 }
