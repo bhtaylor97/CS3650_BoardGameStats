@@ -13,6 +13,9 @@ namespace BoardGameStats.Pages
 
         public List<Player> allPlayers { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
+
         public PlayersModel(PlayerRepository pr)
         {
             this.pr = pr;
@@ -31,6 +34,19 @@ namespace BoardGameStats.Pages
             pr.Add(newPlayer);
             newPlayer = new Player();
             allPlayers = pr.GetAllPlayers().ToList();
+            return Page();
+        }
+
+        public IActionResult OnPostSearch()
+        {
+            newPlayer = new Player();
+            IEnumerable<Player> somePlayers = pr.GetAllPlayers();
+            if (SearchString != "" && SearchString is not null)
+            {
+                somePlayers = somePlayers.Where(f => f.Name.Contains(SearchString) || f.Name.Contains(SearchString.ToLower()) || f.Name.Contains(SearchString.ToUpper()));
+            }
+
+            allPlayers = somePlayers.ToList();
             return Page();
         }
     }

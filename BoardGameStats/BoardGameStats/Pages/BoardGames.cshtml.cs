@@ -15,6 +15,9 @@ namespace BoardGameStats.Pages
 
         [BindProperty]
         public BufferedImageUpload FileUpload { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
         public List<BoardGame> allBoardGames { get; set; }
 
         public BoardGamesModel(BoardGameRepository bgr)
@@ -55,6 +58,20 @@ namespace BoardGameStats.Pages
             bgr.Add(newBoardGame);
             newBoardGame = new BoardGame();
             allBoardGames = bgr.GetAllBoardGames().ToList();
+            return Page();
+        }
+
+
+        public IActionResult OnPostSearch()
+        {
+            newBoardGame = new BoardGame();
+            IEnumerable<BoardGame> someBoardGames = bgr.GetAllBoardGames();
+            if (SearchString != "" && SearchString is not null)
+            {
+                someBoardGames = someBoardGames.Where(f => f.Name.ToUpper().Contains(SearchString.ToUpper()));
+            }
+
+            allBoardGames = someBoardGames.ToList();
             return Page();
         }
     }

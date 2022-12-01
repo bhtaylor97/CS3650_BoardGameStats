@@ -4,13 +4,20 @@
     Layout = "Shared/_Layout.cshtml";
 }
 
-<div class="container">
-<h4>Add a Player</h4>
-    <form method="post">
-        <label class="control-label">Enter Player Name</label>
-        <input asp-for="newPlayer.Name" class="form-control"/>
-        <input type="submit" value="Add" class="btn btn-primary" />
+<div class="search">
+    <form method="post" asp-page-handler="Search">
+        <h4>Find a player</h4>
+        <input type="text" asp-for="SearchString"/>
+        <input type="submit" value="Search" class="btn btn-primary"/>
     </form>
+    <button class="collapsible btn btn-secondary">Add a New Player</button>
+    <div class="content">
+        <form method="post">
+            <label class="control-label">Enter Player Name</label>
+            <input asp-for="newPlayer.Name" class="form-control"/>
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </form>
+    </div>
 </div>
 
 @if(Model.allPlayers.Count() > 0)
@@ -18,9 +25,9 @@
     <div class="container">
     @foreach(var p in Model.allPlayers)
     {
-        <div class="row">
+        <div class="row player">
             <div class="col">
-            <p>@p.Name</p>
+            <h6>@p.Name</h6>
             </div>
             <div class="col">
             <a class="btn btn-primary" asp-page="playerdetails/" asp-route-playerId="@p.Id">Details</a>
