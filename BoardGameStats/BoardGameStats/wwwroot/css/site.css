@@ -16,6 +16,10 @@ html {
   margin: 0px;
 }
 
+header, nav {
+    background-color: aliceblue;
+}
+
 body {
     background-color: darkslategray;
     width: 100%;
@@ -48,6 +52,7 @@ body {
     margin-left: auto;
     margin-top: 10px;
     box-shadow: 5px 5px 10px gray;
+    filter: grayscale(70%);
 }
 
 .container {
@@ -63,8 +68,12 @@ body {
 
 .card:hover {
     box-shadow: 20px 20px 25px black;
-    background-color: white;
+    background-color: whitesmoke;
     cursor: pointer;
+}
+
+.card:hover > img {
+    filter: none;
 }
 
 .card:active {
@@ -77,6 +86,7 @@ body {
     margin: 20px;
     width: 90%;
     border-radius: 10px;
+    filter: grayscale(70%);
 }
 
 .card-index > .card-body > h5 {
@@ -84,8 +94,14 @@ body {
 }
 
 .card-index {
-    background-color: white;
+    background-color: aliceblue;
     height: 29rem;
+}
+
+.card-index:hover {
+    box-shadow: 20px 20px 25px black;
+    background-color: whitesmoke;
+    cursor: pointer;
 }
 
 
@@ -99,20 +115,34 @@ body {
     width: 50%;
 }
 
+.details {
+    box-shadow: 8px 8px 10px black;
+    background-color: aliceblue;
+    border-radius: 5%;
+    padding: 25px;
+    margin: 25px;
+    width: 100%;
+}
+
+.bg-img {
+    margin-top: 30px;
+    box-shadow: 8px 8px 10px black;
+}
+
 .player {
     box-shadow: 8px 8px 10px black;
-    background-color: whitesmoke;
+    background-color: aliceblue;
     border-radius: 5%;
     padding: 10px;
     margin: 25px;
     width: 30%;
 }
 
-form {
+form, section {
     padding: 10px;
 }
 
-form > input {
+form > input  section {
     padding: 10px;
 }
 
