@@ -4,7 +4,9 @@
     Layout = "Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
+<h5 class="nav-links"><a asp-page="index/">Home</a> >> <a asp-page="BoardGames/">Board Games</a> >> @Model.details.ThisBoardGame.Name</h5>
+
+<div class="container">
     <div class="row">
         <div class="col">
     @if (Model.details.ThisBoardGame.Image != null)

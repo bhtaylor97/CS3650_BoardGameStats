@@ -156,3 +156,12 @@ form > input  section {
 }
 /* -------------------------------------------------- */
 
+.nav-links, .nav-links > a {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.nav-links > a:hover {
+    color: white;
+    text-decoration: underline;
+}

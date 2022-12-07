@@ -6,6 +6,8 @@
 }
 @using BoardGameStats.Models;
 
+<h5 class="nav-links"><a asp-page="index/">Home</a> >> <a asp-page="BoardGames/">Board Games</a> >> <a asp-page="BoardGameDetails/" asp-route-boardGameId="@Model.boardGame.Id">@Model.boardGame.Name</a> >> Log Play</h5>
+
 <div class="container details">
     <h4>Log a Play for @Model.boardGame.Name</h4>
     <form method="post" asp-route-boardGameId="@Model.boardGame.Id" id="form">
@@ -22,11 +24,18 @@
             <input asp-for="newGames[0].Score" type="text"/>
             <label for="won">Won?</label>
             <input asp-for="newGames[0].Won" type="checkbox" id="won"/>
-            <button type="button" class="btn btn-secondary" onclick="addFormSection()" id="button0">Add Player</button>
+            <button type="button" class="btn btn-secondary" onclick="addFormSection()" id="button0">Add a Player</button>
         </section>
         <input type="submit" class="btn btn-primary" value="Log Play" id="submit"/>
-
     </form>
+    <button class="collapsible btn btn-secondary">Create a New Player</button>
+    <div class="content">
+        <form method="post" asp-page-handler="CreatePlayer" asp-route-boardGameId="@Model.boardGame.Id">
+            <label class="control-label">Enter Player Name</label>
+            <input asp-for="newPlayer.Name" class="form-control"/>
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </form>
+    </div>
 </div>
 
 @*
@@ -88,10 +97,26 @@ var formCount = 1;
         var buttonText = document.createTextNode("Add a Player");
         button.appendChild(buttonText);
         newSection.appendChild(button);
+        //Add the button to remove a form section
+        button = document.createElement("button");
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'btn btn-light');
+        button.setAttribute('onclick', 'removeFormSection()');
+        button.setAttribute('id', 'removebutton' + formCount);
+        var bold = document.createElement("b");
+        var x = document.createTextNode("X");
+        bold.appendChild(x);
+        button.appendChild(bold);
+        newSection.appendChild(button);
 
-        //Make the old button disappear
+        //Make the old buttons disappear
         var oldButton = document.getElementById("button" + (formCount - 1));
         oldButton.remove();
+
+        if (formCount > 1) {
+            var oldRemoveButton = document.getElementById("removebutton" + (formCount - 1));
+            oldRemoveButton.remove();
+        }
 
         //Insert the new section after the previous section
         var submitButton = document.getElementById("submit");
@@ -101,7 +126,39 @@ var formCount = 1;
 
     }
 
-    function removeFormSection() {
+function removeFormSection() {
+    var index = formCount - 1;
+    var itemToRemove = document.getElementById("section" + index);
+    itemToRemove.remove();
+    formCount--;
+    @{Model.newGames.RemoveAt(Model.newGames.Count - 1);
+        }
 
+    //Re-add the buttons after the previous section
+    if (index > 0) {
+        var oldSection = document.getElementById("section" + (index - 1));
+        //Add player button
+        var button = document.createElement("button");
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'btn btn-secondary');
+        button.setAttribute('onclick', 'addFormSection()');
+        button.setAttribute('id', 'button' + (formCount - 1));
+        var buttonText = document.createTextNode("Add a Player");
+        button.appendChild(buttonText);
+        oldSection.appendChild(button);
+        //Remove player button
+        button = document.createElement("button");
+        button.setAttribute('type', 'button');
+        button.setAttribute('class', 'btn btn-light');
+        button.setAttribute('onclick', 'removeFormSection()');
+        button.setAttribute('id', 'removebutton' + (formCount - 1));
+        var bold = document.createElement("b");
+        var x = document.createTextNode("X");
+        bold.appendChild(x);
+        button.appendChild(bold);
+        if (formCount > 1) {
+            oldSection.appendChild(button);
+        }
     }
+}
 </script>

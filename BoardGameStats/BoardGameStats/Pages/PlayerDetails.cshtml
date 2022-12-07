@@ -3,44 +3,61 @@
 @{
     Layout = "Shared/_Layout.cshtml";
 }
+
+<h5 class="nav-links"><a asp-page="index/">Home</a> >> <a asp-page="Players/">Players</a> >> @Model.details.ThisPlayer.Name</h5>
+
 <div class="container">
-    <h2>@Model.details.ThisPlayer.Name</h2>
-    <p>Total Plays: @Model.details.ThisPlayer.NumPlays</p>
-    <p>Total Wins: @Model.details.TotalWins (@Model.details.WinPercentage%)</p>
-    <h3>Game Mastery</h3>
-    @{  int GamesCount = 0;
-        @foreach(var game in Model.details.TopThreeGames)
-        {
-            if(game.WinPercentage > 0)
-            {
-                GamesCount++;
-            }
-        }
-    }
-    <p>Best Win Percentages</p>
-    @if(GamesCount == 0)
-    {
-        <p>This player hasn't won any games yet!</p>
-    }
-    <ul>
-        @for(int i = 0; i < GamesCount; i++)
-        {
-            <li>@Model.details.TopThreeGames[i].GameName - Win Percentage: @Model.details.TopThreeGames[i].WinPercentage%</li>
-        }
-    </ul>
-    @if(Model.details.HighScores.Count == 0)
-    {
-        <p>High Scores</p>
-        <p>This player doesn't have any high scores yet!</p>
-    }
-    else
-    {
-    <p>High Scores (@Model.details.HighScores.Count)</p>
-    <ul>
-        @foreach(var hs in Model.details.HighScores)
-        {
-                <li>@hs.GameName, @hs.Score points</li>
-        }
-    </ul>
-    }
+    <div class="row">
+        <div class="col">
+            <div class="details">
+                <h2>@Model.details.ThisPlayer.Name</h2>
+                <p>Total Plays: @Model.details.ThisPlayer.NumPlays</p>
+                <p>Total Wins: @Model.details.TotalWins (@Model.details.WinPercentage%)</p>
+                @{  int GamesCount = 0;
+                @foreach(var game in Model.details.TopThreeGames)
+                {
+                    if(game.WinPercentage > 0)
+                    {
+                        GamesCount++;
+                    }
+                }
+                }
+                @if(GamesCount == 0)
+                {
+                    <h4>Best Win Percentages </h4>
+                    <p>This player hasn't won any games yet!</p>
+                }
+                else
+                {
+                    string gameString = GamesCount == 1 ? "game - play more games to see more data!" : GamesCount.ToString() + " games";
+                    <h4>Best Win Percentages (Top @gameString)</h4>
+                }
+                <ul>
+                    @for(int i = 0; i < GamesCount; i++)
+                    {
+                        <li>@Model.details.TopThreeGames[i].GameName - Win Percentage: @Model.details.TopThreeGames[i].WinPercentage%</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="details">
+                @if(Model.details.HighScores.Count == 0)
+                {
+                    <h4>High Scores</h4>
+                    <p>This player doesn't have any high scores yet!</p>
+                }
+                else
+                {
+                    <h4>High Scores (@Model.details.HighScores.Count)</h4>
+                    <ul>
+                        @foreach(var hs in Model.details.HighScores)
+                        {
+                            <li>@hs.GameName, @hs.Score points</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
 </div>

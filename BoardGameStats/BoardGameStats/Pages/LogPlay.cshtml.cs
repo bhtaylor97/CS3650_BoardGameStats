@@ -11,6 +11,9 @@ namespace BoardGameStats.Pages
         private BoardGameRepository bgr { get; set; }
         private GameRepository gr { get; set; }
 
+        [BindProperty]
+        public Player newPlayer { get; set; }
+
         public LogPlayModel(PlayerRepository pr, BoardGameRepository bgr, GameRepository gr)
         {
             this.pr = pr;
@@ -52,6 +55,18 @@ namespace BoardGameStats.Pages
             pr.UpdateList(players);
             gr.AddList(newGames);
             return Redirect("BoardGameDetails/" + boardGameId.ToString());
+        }
+
+        public IActionResult OnPostCreatePlayer(int boardGameId)
+        {
+            pr.Add(newPlayer);
+            newPlayer = new Player();
+            allPlayers = pr.GetAllPlayers().ToList();
+            newGames = new List<Game>();
+            newGame = new Game();
+            newGames.Add(newGame);
+            boardGame = bgr.Get(boardGameId);
+            return Page();
         }
     }
 }
